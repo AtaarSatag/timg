@@ -559,32 +559,31 @@ brew install pandoc  # If you want to recreate the man page
 In the script below you see that the build system allows for some
 compile-time choices:
 
-  * **`WITH_LIBSIXEL`** Use libsixel to output images in [sixel] graphics
-     format. Default **ON**.
-  * **`WITH_VIDEO_DECODING`** allow for video decoding. Requires ffmpeg-related
-     libraries. You typically want this **ON** (default)
+  * **`WITH_LIBSIXEL` (default: ON)** Use libsixel to output images in [sixel] graphics
+     format.
+  * **`WITH_VIDEO_DECODING` (default: ON)** allow for video decoding. Requires ffmpeg-related
+     libraries.
      * **`WITH_VIDEO_DEVICE`** this allows for accessing connected video
      devices, e.g. you can watch your webcam input (requires
      `WITH_VIDEO_DECODING`).
-  * **`WITH_GRAPHICSMAGICK`** This is the main image loading library so you
-    typically want this **ON** (default).
-  * **`WITH_TURBOJPEG`** If enabled, uses this for faster jpeg file loading.
-     You typically want this **ON** (default).
-  * **`WITH_POPPLER`** High-quality and faster PDF renderer. Needs poppler
+  * **`WITH_GRAPHICSMAGICK` (default: ON)** This is the main image loading library so you
+    typically want this.
+  * **`WITH_TURBOJPEG`  (default: ON)** If enabled, uses this for faster jpeg file loading.
+  * **`WITH_POPPLER`  (default: ON)** High-quality and faster PDF renderer. Needs poppler
     and cairo.
     If not compiled-in, will fallback to GraphicsMagick, but that typically
-    results in lower quality renderings. Typically want this **ON** (default).
-  * **`WITH_RSVG`** High-quality SVG renderer. Needs librsvg and cairo.
+    results in lower quality renderings.
+  * **`WITH_RSVG`  (default: ON)** High-quality SVG renderer. Needs librsvg and cairo.
     If not compiled-in, will fallback to GraphicsMagick, but that typically
-    results in lower quality renderings. Typically want this **ON** (default).
-  * **`WITH_OPENSLIDE_SUPPORT`** Openslide is an image format used in scientific
-    applications. Rarely used, so default off, switch ON if needed.
-  * **`WITH_QOI_IMAGE`** Allow decoding of Quite Ok Image format [QOI]. Small
-     and simple, default **ON**.
-  * **`WITH_STB_IMAGE`** Compile the simpler STB image library directly into
+    results in lower quality renderings.
+  * **`WITH_OPENSLIDE_SUPPORT` (default: OFF)** Openslide is an image format used in scientific
+    applications.
+  * **`WITH_QOI_IMAGE` (default: ON)** Allow decoding of Quite Ok Image format [QOI]. Small
+     and simple.
+  * **`WITH_STB_IMAGE` (default: ON)** Compile the simpler STB image library directly into
     the timg binary in cases where Graphicsmagick is not suitable for
     dependency pruning reasons; output can be slower and of less quality.
-    It is default **ON** (default) but will always only attempted
+    It is default **ON**, but will always only attempted
     after other image loading fails. Turn off if you can use GraphicsMagick and
     want to reduce potential security vectors.
 
@@ -597,10 +596,12 @@ cd timg                     # Enter the checked out repository directory.
 mkdir build                 # Generate a dedicated build directory.
 cd build
 # cmake with your desired options, see descriptions above
-cmake ../ -DWITH_OPENSLIDE_SUPPORT=On
+cmake [-B /path/to/build_dir] [-S] /path/to/src_dir [-DWITH_VIDEO_DEVICE=ON, -DWITH_OPENSLIDE_SUPPORT=On]
 make
+# OR (more modern, nproc is used to build faster)
+# cmake --build /path/to/build_dir --config Release -j $(($(nproc --all)-1))
 
-# After compilation, you can run from build/src/timg or install on your system with
+# After compilation, you can run from build/src/timg (or /path/to/build_dir) or install on your system with
 sudo make install
 ```
 
